@@ -1,0 +1,87 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Gerenciamento de Eventos</li>
+  </ol>
+</nav>
+<div class="container">
+  <div class="card list-evento">
+    <h5 class="card-header">Lista de Eventos</h5>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Responsável</th>
+            <th scope="col">Sala</th>
+            <th scope="col">Início</th>
+            <th scope="col">Fim</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let evento of eventos">
+            <td>{{evento.id}}</td>
+            <td>{{evento.nomeResponsavel}}</td>
+            <td>{{evento.salaId}}</td>
+            <td>{{evento.dataInicio | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{evento.dataFim | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" (click)="editEvento(evento)">Editar</button>
+              <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteEvento(evento)">Deletar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card add-evento">
+    <h5 class="card-header">Adicionar/Atualizar Evento</h5>
+    <div class="card-body">
+      <form id="add-form" (ngSubmit)="f.form.valid && saveEvento(f)" #f="ngForm" novalidate>
+        <div class="form-group">
+          <label for="nomeResponsavel">Responsável</label>
+          <input type="text" [(ngModel)]="evento.nomeResponsavel" id="nomeResponsavel" name="nomeResponsavel"
+            #nomeResponsavel="ngModel" required class="form-control"
+            [ngClass]="{ 'is-invalid': f.submitted && nomeResponsavel.invalid }"
+            placeholder="Digite o Nome do Responsável" [disabled]="operacao !== 'E' && operacao !== 'A'">
+          <div *ngIf="f.submitted && nomeResponsavel.invalid" class="invalid-feedback">
+            <div *ngIf="nomeResponsavel.errors.required">Responsável é obrigatório</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="salaId">Sala</label>
+          <select [(ngModel)]="evento.salaId" id="salaId" name="salaId" #salaId="ngModel" required class="form-control"
+            [ngClass]="{ 'is-invalid': f.submitted && salaId.invalid }" [disabled]="operacao !== 'E' && operacao !== 'A'">
+            <option value="">--Selecione--</option>
+            <option *ngFor="let sala of salas" [ngValue]=sala.id> {{sala.nome}} </option>
+          </select>
+          <div *ngIf="f.submitted && salaId.invalid" class="invalid-feedback">
+            <div *ngIf="salaId.errors.required">Sala é obrigatória</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dataInicio">Data/Horario Início</label>
+          <input type="datetime-local" [(ngModel)]="evento.dataInicio" id="dataInicio" name="dataInicio"
+            #dataInicio="ngModel" required class="form-control"
+            [ngClass]="{ 'is-invalid': f.submitted && dataInicio.invalid }" [disabled]="operacao !== 'E' && operacao !== 'A'">
+          <div *ngIf="f.submitted && dataInicio.invalid" class="invalid-feedback">
+            <div *ngIf="dataInicio.errors.required">Data de Início é obrigatória</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dataFim">Data/Horario Fim</label>
+          <input type="datetime-local" [(ngModel)]="evento.dataFim" id="dataFim" name="dataFim"
+            #dataFim="ngModel" required class="form-control"
+            [ngClass]="{ 'is-invalid': f.submitted && dataFim.invalid }" [disabled]="operacao !== 'E' && operacao !== 'A'">
+          <div *ngIf="f.submitted && dataFim.invalid" class="invalid-feedback">
+            <div *ngIf="dataFim.errors.required">Data de Fim é obrigatória</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-add-evento" (click)="addEvento(f)" [disabled]="operacao !== 'P'">Adicionar</button>
+        <button type="submit" class="btn btn-primary btn-add-evento" [disabled]="operacao === 'P'">Salvar</button>
+        <button type="reset" class="btn btn-secondary btn-add-evento" (click)="cleanForm(f)" [disabled]="operacao === 'P'">Cancelar</button>
+      </form>
+    </div>
+  </div>
+</div>
