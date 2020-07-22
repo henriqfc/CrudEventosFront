@@ -4,7 +4,9 @@ Projeto Gerado com [Angular CLI](https://github.com/angular/angular-cli) version
 
 ## Para Testar
 
-Rodar `ng serve` e abrir `http://localhost:4200/` no navegador.
+Instalar os pacotes do node com o comando `npm install` (é necessário ter o node instalado no computador)
+
+Rodar `ng serve` e abrir `http://localhost:4200/` no navegador. (é necessário ter o Angular CLI instalado no computador)
 
 ## API
 
